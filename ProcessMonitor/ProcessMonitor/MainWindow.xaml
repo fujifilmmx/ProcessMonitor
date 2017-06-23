@@ -5,18 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProcessMonitor"
         mc:Ignorable="d"
-        Title="Process Monitor" Height="350" Width="525">
+        Title="Process Monitor" Height="350" Width="525" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+        <CollectionViewSource x:Key="ItemCollectionViewSource" CollectionViewType="ListCollectionView"/>
+    </Window.Resources>
     <Grid>
         <DockPanel>
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="Configuración">
-                    <MenuItem Header="Proceso">
-                        <MenuItem Header="Tiempo de espera"/>
-                        <MenuItem Header="Nombre del proceso"/>
-                    </MenuItem>
-                    <MenuItem Header="Notificador">
-                        <MenuItem Header="Correo"></MenuItem>
-                        <MenuItem Header="Destinatarios"></MenuItem>
+                <MenuItem x:Name="mnConfiguracion" Header="_Configuracion">
+                    <MenuItem Header="_Proceso" x:Name="mnProceso"/>
+                    <MenuItem Header="_Notificador">
+                        <MenuItem Header="_Correo" x:Name="btnConfigurarCorreo"></MenuItem>
+                        <MenuItem Header="_Destinatarios" x:Name="btnDestinatarios"></MenuItem>
                     </MenuItem>
                 </MenuItem>
             </Menu>
@@ -32,19 +32,20 @@
                             <Setter Property="Margin" Value="10,0,0,0"/>
                         </Style>
                     </StackPanel.Resources>
-                    <Label>Tiempo de actividad:</Label>
-                    <Label FontWeight="Bold">00:00:00</Label>
-                    <Button Width="80">Detener</Button>
+                    <Label>Tiempo para la siguiente revisión:</Label>
+                    <Label x:Name="Lbl_Crono" FontWeight="Bold"></Label>
+                    <Button x:Name="btnPlay" Width="80">Detener</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Label>Nombre del proceso:</Label>
-                    <Label FontWeight="Bold">sap.exe</Label>
+                    <Label x:Name="LblProceso" FontWeight="Bold">sap.exe</Label>
                 </StackPanel>
                 <StackPanel>
                     <Label Foreground="Coral">-Notificaciones enviadas-</Label>
-                    <DataGrid x:Name="dgNotificaciones"                           
+                    <DataGrid x:Name="dgNotificaciones"
+                              DataContext="{StaticResource ItemCollectionViewSource}"
                           CanUserAddRows="False"
-                          ItemsSource="{Binding Notificaciones, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                          ItemsSource="{Binding lst_Notificaciones, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
                           AutoGenerateColumns="False" ColumnWidth="*" MaxHeight="350" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Nombre destinatario" Binding="{Binding Nombre}" IsReadOnly="True"></DataGridTextColumn>
